@@ -1,0 +1,39 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import LabelEncoder
+
+# Load the student data (replace 'student_data.csv' with the actual filename)
+data = pd.read_csv('student_data.csv')
+
+# Data preprocessing
+# Encoding categorical variables
+le = LabelEncoder()
+data['Gender'] = le.fit_transform(data['Gender'])
+data['Ethnicity'] = le.fit_transform(data['Ethnicity'])
+data['Guardian'] = le.fit_transform(data['Guardian'])
+
+# Handling missing values if any
+data.dropna(inplace=True)
+
+# Feature selection - consider relevant features for classification
+X = data[['Gender', 'Ethnicity', 'Guardian', 'Absenteeism', 'Grade1', 'Grade2', 'Grade3']]
+y = data['Risk']  # 'Risk' column indicates the risk of academic probation or dropout
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Model training
+nb_classifier = GaussianNB()
+nb_classifier.fit(X_train, y_train)
+
+# Model evaluation
+y_pred = nb_classifier.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+# Prediction
+# You can use this model to predict the risk for new students
