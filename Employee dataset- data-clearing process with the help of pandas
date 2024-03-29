@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create the employee dataset
+data = {
+    'Name': ['John', 'Alice', 'Bob', 'Emily', 'Michael'],
+    'Employee ID': [101, 102, 103, 104, 105],
+    'Age': [30, 25, 35, None, 40],  # Adding a missing value for demonstration
+    'Salary': [50000, 60000, 55000, 70000, 65000],
+    'Department': ['HR', 'Finance', 'IT', 'IT', 'Marketing']
+}
+
+df = pd.DataFrame(data)
+
+# Display the original dataset
+print("Original Dataset:")
+print(df)
+print()
+
+# Data cleaning process
+# Handling missing values
+df['Age'].fillna(df['Age'].mean(), inplace=True)
+
+# Visualize the growth of each employee using a bar chart
+plt.figure(figsize=(10, 6))
+plt.bar(df['Name'], df['Salary'])
+plt.xlabel('Employee')
+plt.ylabel('Salary')
+plt.title('Salary Growth of Each Employee')
+plt.xticks(rotation=45)
+plt.show()
